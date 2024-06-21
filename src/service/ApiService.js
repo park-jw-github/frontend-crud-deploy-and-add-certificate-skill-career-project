@@ -5,6 +5,7 @@ const ACCESS_TOKEN = "ACCESS_TOKEN";
 export function call(api, method, request, authRequired = true) {
   let headers = new Headers({
     "Content-Type": "application/json", // 요청 헤더 설정
+    "Accept": "application/json", // JSON 응답을 명시적으로 요청
   });
 
   if (authRequired) {
