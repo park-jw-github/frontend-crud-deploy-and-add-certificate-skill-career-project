@@ -2,7 +2,6 @@
   "name": "devdoc-front-resume",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://k2c15fe25c5eca.user-app.krampoline.com",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
