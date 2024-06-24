@@ -4,43 +4,35 @@ const ACCESS_TOKEN = "ACCESS_TOKEN";
 // API 호출 함수
 export function call(api, method, request, authRequired = true) {
   let headers = new Headers({
-    "Content-Type": "application/json", // 요청 헤더 설정
-    "Accept": "application/json", // JSON 응답을 명시적으로 요청
+    "Content-Type": "application/json", 
+    "Accept": "application/json", 
   });
 
   if (authRequired) {
-    // 로컬 스토리지에서 ACCESS TOKEN 가져오기
     const accessToken = localStorage.getItem(ACCESS_TOKEN);
-    console.log("Access Token from localStorage:", accessToken);
-
     if (accessToken && accessToken !== "null") {
-      headers.append("Authorization", "Bearer " + accessToken); // 토큰이 있을 경우 헤더에 추가
+      headers.append("Authorization", "Bearer " + accessToken);
     }
   }
 
   let options = {
     headers: headers,
     url: API_BASE_URL + api,
-    method: method, // HTTP 메서드 설정
+    method: method, 
   };
 
   if (request) {
-    options.body = JSON.stringify(request); // 요청 본문 설정
+    options.body = JSON.stringify(request);
   }
 
-  console.log('Sending request to:', options.url);
-
   return fetch(options.url, options)
-    .then((response) =>
-      response.text().then((text) => {
-        console.log("Response Text:", text);
-        if (!response.ok) {
-          return Promise.reject(text);
-        }
-        return text ? JSON.parse(text) : {}; // JSON 응답이 비어있을 경우 처리
-      })
-    )
-    .catch((error) => {
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(error => Promise.reject(error));
+      }
+      return response.json(); 
+    })
+    .catch(error => {
       console.error("Fetch error:", error);
       if (error.status === 403) {
         window.location.href = "/login";
